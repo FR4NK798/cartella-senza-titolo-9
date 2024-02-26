@@ -29,29 +29,18 @@ User.compareAge(utente1, utente2);
 
 const animals = [];
 
-class Pet {
-  constructor(petName, ownerName, species, breed) {
-    this.petName = petName;
-    this.ownerName = ownerName;
-    this.species = species;
-    this.breed = breed;
-  }
-
-  static sameOwner(animals) {
-    return animals[0].ownerName === animals[1].ownerName;
-  }
-}
-
 const form = document.querySelector("form");
 
 const div = document.querySelector("div");
 console.log(div);
 
+let animal = null;
+let animal2 = null;
+
 form.onsubmit = function (e) {
   e.preventDefault();
-  console.log("Form Inviato");
 
-  //   console.log("array animals", animals);
+  console.log("Form Inviato");
 
   const petNameInsert = document.getElementById("petName");
   console.log(petNameInsert.value);
@@ -65,9 +54,27 @@ form.onsubmit = function (e) {
   const breedInsert = document.getElementById("breed");
   console.log(breedInsert.value);
 
-  animals.push(new Pet(petNameInsert.value, ownerNameInsert.value, speciesInsert.value, breedInsert.value));
+  class Pet {
+    constructor(petName, ownerName, species, breed) {
+      this.petName = petName;
+      this.ownerName = ownerName;
+      this.species = species;
+      this.breed = breed;
+    }
 
-  console.log(animals);
+    sameOwner(otherAnimal) {
+      return this.ownerName === otherAnimal.ownerName;
+    }
+  }
+
+  if (animal === null) {
+    animal = new Pet(petNameInsert.value, ownerNameInsert.value, speciesInsert.value, breedInsert.value);
+  } else {
+    animal2 = new Pet(petNameInsert.value, ownerNameInsert.value, speciesInsert.value, breedInsert.value);
+  }
+
+  console.log("animal: ", animal);
+  console.log("animal2: ", animal2);
 
   const namePet = document.createElement("h2");
   namePet.innerText = petNameInsert.value;
@@ -89,13 +96,10 @@ form.onsubmit = function (e) {
   div.appendChild(ownerPet);
   div.appendChild(spaciesPet);
   div.appendChild(breedPet);
-
-  //   Pet.sameOwner(animals);
-
-  if (animals[1] !== null) {
+  if (animal2 !== null) {
+    console.log(animal.sameOwner(animal2));
     const result = document.createElement("h3");
-    result.innerText = Pet.sameOwner(animals);
-
+    result.innerText = animal.sameOwner(animal2);
     div.appendChild(result);
   }
 };
